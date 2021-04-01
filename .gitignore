@@ -1,0 +1,12 @@
+# Pycharm
+.idea
+
+# Shared library
+# linux
+*.so
+# windows
+*.dll
+*.lib
+*.pdb
+# mac
+*.dylib

@@ -25,10 +25,16 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Display vlang version
+        run: |
+          v --version
+
       #      - name: Build repository app
       #        run: v .
       #      - name: Run V tests
       #        run: v test .
+
       - name: Build shared lib
         run: |
           v -shared -prod fibrec.v
