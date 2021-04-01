@@ -15,29 +15,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up V version ${{ matrix.v-version }}
-        uses: nocturlab/setup-vlang-action@v1
-        with:
-          v-version: ${{ matrix.v-version }}
-        id: v
-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
 
+# Version is too old for me - try again later
+#      - name: Set up V version ${{ matrix.v-version }}
+#        uses: nocturlab/setup-vlang-action@v1
+#        with:
+#          v-version: ${{ matrix.v-version }}
+#        id: v
+
+      - name: Get and build v
+        run: |
+          git clone https://github.com/vlang/v
+          cd v
+          make
+        if: matrix.os != 'windows-latest'
+
       - name: Display vlang version
         run: |
-          v --version
-
-      #      - name: Build repository app
-      #        run: v .
-      #      - name: Run V tests
-      #        run: v test .
+          v/v --version
 
       - name: Build shared lib
         run: |
-          v -shared -prod fibrec.v
+          v/v -shared -prod fibrec.v
 
       - name: Display generated contents (linux and macos)
         run: |
