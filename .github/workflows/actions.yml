@@ -32,7 +32,6 @@ jobs:
           git clone https://github.com/vlang/v
           cd v
           make
-        if: matrix.os != 'windows-latest'
 
       - name: Display vlang version
         run: |
