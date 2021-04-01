@@ -1,0 +1,48 @@
+name: vlang-build-pipeline
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        v-version: [0.2.2]
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up V version ${{ matrix.v-version }}
+        uses: nocturlab/setup-vlang-action@v1
+        with:
+          v-version: ${{ matrix.v-version }}
+        id: v
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      #      - name: Build repository app
+      #        run: v .
+      #      - name: Run V tests
+      #        run: v test .
+      - name: Build shared lib
+        run: |
+          v -shared -prod fibrec.v
+
+      - name: Display generated contents (linux and macos)
+        run: |
+          ls
+        if: matrix.os != 'windows-latest'
+
+      - name: Display generated contents (windows)
+        run: |
+          dir
+        if: matrix.os == 'windows-latest'
+
+      - name: Run shared lib from python
+        run: |
+          python fibtest.py
