@@ -8,7 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+#        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         v-version: [0.2.2]
         python-version: [3.9]
 
@@ -53,4 +54,4 @@ jobs:
 
       - name: Run shared lib from python
         run: |
-          python fibtest.py
+          python run_shared_library.py
